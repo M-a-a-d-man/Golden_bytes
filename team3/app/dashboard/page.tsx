@@ -2,6 +2,8 @@
 
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
+import AssignmentsTable from '../components/AssignmentsTable'
+
 
 export default function DashboardPage() {
   const { data: session, status } = useSession({
@@ -16,9 +18,9 @@ export default function DashboardPage() {
   }
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Welcome {session?.user?.email}</p>
+    <div className="container mx-auto py-8">
+      <h1 className="text-2xl font-bold mb-6">Upcoming Assignments</h1>
+      <AssignmentsTable />
     </div>
   )
 }
