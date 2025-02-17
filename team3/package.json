@@ -14,10 +14,11 @@
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
-    "moment": "^2.30.1",
     "@prisma/client": "^6.3.1",
+    "@radix-ui/react-dialog": "^1.1.6",
     "dotenv": "^16.4.7",
-    "next": "15.1.6",
+    "moment": "^2.30.1",
+    "next": "^15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
