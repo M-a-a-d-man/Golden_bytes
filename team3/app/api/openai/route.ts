@@ -30,6 +30,9 @@ export async function POST(req: Request) {
         console.log("File uploaded:", uploadedFile.id);
 
         const thread = await openai.beta.threads.create();
+        //Temporary solution. Each user should have their thread.
+
+
         const message = await openai.beta.threads.messages.create(thread.id, {
             role: "user",
             content: "Tell me how much time it will take me to complete this assignment",
