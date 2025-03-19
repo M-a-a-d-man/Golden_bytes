@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/demoApp.jsx", "app/components/Calendar/event-utils.js", "app/page.jsx", "app/Calendar/demoApp.tsx", "app/Calendar/Dialog.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/demoApp.jsx", "app/components/Calendar/event-utils.ts", "app/page.jsx", "app/Calendar/demoApp.tsx", "app/Calendar/Dialog.tsx", "app/auth.ts"],
   "exclude": ["node_modules"]
 }

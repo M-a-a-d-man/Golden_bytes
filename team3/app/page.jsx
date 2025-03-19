@@ -4,7 +4,10 @@ import { redirect } from 'next/navigation';
 export default async function Page() {
     const session = await auth();
 
-    if (session) redirect('/Calendar')
+    if (session && session.user){
+        console.log(session.user);
+        redirect('/Calendar');
+    } 
 
     else redirect('/login');
 }
