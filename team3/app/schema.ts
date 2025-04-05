@@ -126,8 +126,27 @@ export const EventObjectSchemaGPT = z.object({
   attendees: z.array(z.string()).optional().describe("List of attendees for the event"),
   recurrence: z.string().optional().describe("Recurrence pattern for the event"),
 
-  ChatGptComment: z.string().optional().describe("Comments for the event. Specify how much time you think the assignment will take."),
+  ChatGptComment: z.string().optional().describe("Brief analysis of the assignment and time allocation"),
   FirstQuestion: z.string().optional().describe("First question of the provided assignment. Transcribe it here"),
+  
+  // New structured fields for time breakdown
+  timeBreakdown: z.object({
+    estimatedTotalHours: z.number().describe("Total estimated hours needed for the assignment"),
+    readingTime: z.number().describe("Hours needed for reading and understanding the assignment"),
+    researchTime: z.number().describe("Hours needed for research and gathering information"),
+    writingTime: z.number().describe("Hours needed for writing and completing the assignment"),
+    reviewTime: z.number().describe("Hours needed for reviewing and editing"),
+    bufferTime: z.number().describe("Extra buffer time for unexpected issues"),
+    isTimeWindowSufficient: z.boolean().describe("Whether the proposed time window is sufficient"),
+    recommendedStartTime: z.string().describe("Recommended start time for the assignment"),
+    recommendedEndTime: z.string().describe("Recommended end time for the assignment")
+  }).optional().describe("Detailed breakdown of time allocation"),
+  
+  schedulingNotes: z.object({
+    conflicts: z.array(z.string()).describe("List of potential scheduling conflicts"),
+    optimalTimeOfDay: z.string().describe("Optimal time of day for this assignment"),
+    recommendedBreaks: z.array(z.string()).describe("Recommended break times during the assignment")
+  }).optional().describe("Notes about scheduling and optimal times")
 });
   
   // Type definitions
