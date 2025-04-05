@@ -1,13 +1,13 @@
-import {auth} from '@/app/auth'
-import { redirect } from 'next/navigation';
+import CalendarComponent from './Calendar/demoApp';
 
-export default async function Page() {
-    const session = await auth();
-
-    if (session && session.user){
-        console.log(session.user);
-        redirect('/Calendar');
-    } 
-
-    else redirect('/login');
+export default function Page() {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <main className="flex-1">
+        <div style={{ width: '90%', margin: 'auto' }}>
+          <CalendarComponent />
+        </div>
+      </main>
+    </div>
+  );
 }

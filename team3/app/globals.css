@@ -70,3 +70,130 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Calendar Styles */
+.calendar-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.calendar-header {
+  margin-bottom: 20px;
+}
+
+.calendar-wrapper {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* FullCalendar Customization */
+.fc {
+  font-family: var(--font-geist-sans);
+}
+
+.fc-toolbar-title {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+}
+
+.fc-button-primary {
+  background-color: #4f46e5 !important;
+  border-color: #4f46e5 !important;
+}
+
+.fc-button-primary:hover {
+  background-color: #4338ca !important;
+  border-color: #4338ca !important;
+}
+
+.fc-day-today {
+  background-color: rgba(79, 70, 229, 0.1) !important;
+}
+
+/* Calendar Event Styles */
+.fc-event {
+  border: none !important;
+  padding: 2px 6px !important;
+  margin: 2px 0 !important;
+  border-radius: 4px !important;
+}
+
+.fc-event-title {
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  padding: 2px 0 !important;
+}
+
+.fc-event-time {
+  font-size: 0.75rem !important;
+  opacity: 0.8 !important;
+}
+
+/* Event colors */
+.fc-event.reading {
+  background-color: #4f46e5 !important;
+}
+
+.fc-event.research {
+  background-color: #0891b2 !important;
+}
+
+.fc-event.writing {
+  background-color: #059669 !important;
+}
+
+.fc-event.review {
+  background-color: #dc2626 !important;
+}
+
+.fc-event.buffer {
+  background-color: #d97706 !important;
+}
+
+/* Event hover effect */
+.fc-event:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Time grid styles */
+.fc-timegrid-slot {
+  height: 3em !important;
+}
+
+.fc-timegrid-event {
+  min-height: 2em !important;
+}
+
+/* Dialog Styles */
+.MuiDialog-paper {
+  border-radius: 12px !important;
+}
+
+.MuiDialogTitle-root {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 16px 24px !important;
+}
+
+.MuiDialogActions-root {
+  background-color: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  padding: 16px 24px !important;
+}
+
+/* Delete Button Styles */
+.MuiButton-outlinedError {
+  border-color: #dc2626 !important;
+  color: #dc2626 !important;
+}
+
+.MuiButton-outlinedError:hover {
+  background-color: rgba(220, 38, 38, 0.04) !important;
+  border-color: #b91c1c !important;
+}
