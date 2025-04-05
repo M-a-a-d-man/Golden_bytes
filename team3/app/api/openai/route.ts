@@ -48,6 +48,8 @@ export async function POST(req: Request) {
       3. Check for conflicts with existing events
       4. Ensure minimum 1-hour buffer between events
       5. Consider typical work hours (9 AM to 6 PM)
+      6. Make it suitable for a student, and try to breakdown the time into smaller chunks
+      7. A task should not exceed 8 hours in a single day
       
       Return a JSON response with the following structure:
       {

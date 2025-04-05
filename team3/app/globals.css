@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #f8fafc;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -76,124 +80,324 @@ body {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 100vh;
+  color: #1f2937;
 }
 
 .calendar-header {
   margin-bottom: 20px;
 }
 
+.calendar-header h1 {
+  color: #1f2937;
+}
+
+.calendar-header p {
+  color: #64748b;
+}
+
 .calendar-wrapper {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   padding: 20px;
 }
 
-/* FullCalendar Customization */
+/* FullCalendar Light Theme */
 .fc {
   font-family: var(--font-geist-sans);
+  background-color: #ffffff;
+  border-radius: 12px;
+  --fc-border-color: #e2e8f0;
+  --fc-page-bg-color: #ffffff;
+  --fc-neutral-bg-color: #f1f5f9;
+  --fc-neutral-text-color: #1f2937;
+  --fc-button-text-color: #ffffff;
+  --fc-button-bg-color: #912338;
+  --fc-button-border-color: #912338;
+  --fc-button-hover-bg-color: #7a1d2e;
+  --fc-button-hover-border-color: #7a1d2e;
+  --fc-button-active-bg-color: #7a1d2e;
+  --fc-button-active-border-color: #7a1d2e;
+  --fc-event-bg-color: #912338;
+  --fc-event-border-color: #912338;
+  --fc-event-text-color: #ffffff;
+  --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.1);
+  --fc-today-bg-color: rgba(145, 35, 56, 0.1);
+  --fc-now-indicator-color: #912338;
 }
 
-.fc-toolbar-title {
+/* Calendar grid and cells */
+.fc .fc-scrollgrid {
+  border: none !important;
+}
+
+.fc .fc-scrollgrid-section > td {
+  border: 1px solid #e2e8f0 !important;
+}
+
+.fc-theme-standard td, 
+.fc-theme-standard th {
+  border-color: #e2e8f0 !important;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  border-radius: 8px;
+}
+
+/* Time slots and labels */
+.fc-timegrid-slot {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+.fc-timegrid-slot-lane {
+  background-color: #ffffff !important;
+}
+
+.fc-col-header-cell-cushion,
+.fc-daygrid-day-number,
+.fc-timegrid-slot-label-cushion {
+  color: #1f2937 !important;
+}
+
+.fc .fc-timegrid-slot-label {
+  color: #64748b !important;
+}
+
+.fc .fc-toolbar-title {
+  color: #1f2937;
   font-size: 1.5rem !important;
   font-weight: 600 !important;
 }
 
-.fc-button-primary {
-  background-color: #4f46e5 !important;
-  border-color: #4f46e5 !important;
-}
-
-.fc-button-primary:hover {
-  background-color: #4338ca !important;
-  border-color: #4338ca !important;
-}
-
 .fc-day-today {
-  background-color: rgba(79, 70, 229, 0.1) !important;
+  background-color: rgba(145, 35, 56, 0.05) !important;
 }
 
-/* Calendar Event Styles */
+/* Event Styles */
 .fc-event {
   border: none !important;
-  padding: 2px 6px !important;
+  padding: 4px 8px !important;
   margin: 2px 0 !important;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.fc-event-main-content {
+  padding: 2px 4px !important;
 }
 
 .fc-event-title {
   font-weight: 500 !important;
   font-size: 0.875rem !important;
-  padding: 2px 0 !important;
+  line-height: 1.25 !important;
+  margin-bottom: 2px !important;
 }
 
 .fc-event-time {
   font-size: 0.75rem !important;
-  opacity: 0.8 !important;
+  opacity: 0.9 !important;
+  margin-bottom: 2px !important;
 }
 
-/* Event colors */
+/* Event Types with Gradients */
 .fc-event.reading {
-  background-color: #4f46e5 !important;
+  background: linear-gradient(135deg, #912338, #7a1d2e) !important;
+  border-left: 4px solid #a62941 !important;
 }
 
 .fc-event.research {
-  background-color: #0891b2 !important;
+  background: linear-gradient(135deg, #a62941, #8f2337) !important;
+  border-left: 4px solid #bf2f4a !important;
 }
 
 .fc-event.writing {
-  background-color: #059669 !important;
+  background: linear-gradient(135deg, #bf2f4a, #a62941) !important;
+  border-left: 4px solid #d83553 !important;
 }
 
 .fc-event.review {
-  background-color: #dc2626 !important;
+  background: linear-gradient(135deg, #d83553, #bf2f4a) !important;
+  border-left: 4px solid #f13c5c !important;
 }
 
 .fc-event.buffer {
-  background-color: #d97706 !important;
+  background: linear-gradient(135deg, #f13c5c, #d83553) !important;
+  border-left: 4px solid #ff4365 !important;
 }
 
 /* Event hover effect */
 .fc-event:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px) !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15) !important;
+  filter: brightness(1.1) !important;
 }
 
-/* Time grid styles */
-.fc-timegrid-slot {
-  height: 3em !important;
+/* Now indicator line */
+.fc .fc-timegrid-now-indicator-line {
+  border-color: var(--fc-now-indicator-color) !important;
+  border-width: 2px !important;
 }
 
-.fc-timegrid-event {
-  min-height: 2em !important;
+.fc .fc-timegrid-now-indicator-arrow {
+  border-color: var(--fc-now-indicator-color) !important;
+  border-width: 5px !important;
 }
 
-/* Dialog Styles */
+/* Dialog Light Theme */
 .MuiDialog-paper {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
   border-radius: 12px !important;
 }
 
 .MuiDialogTitle-root {
-  background-color: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 16px 24px !important;
+  background-color: #f8fafc !important;
+  color: #1f2937 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  padding: 20px 24px !important;
+}
+
+.MuiDialogContent-root {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
 }
 
 .MuiDialogActions-root {
-  background-color: #f9fafb;
-  border-top: 1px solid #e5e7eb;
+  background-color: #f8fafc !important;
+  border-top: 1px solid #e2e8f0 !important;
   padding: 16px 24px !important;
 }
 
-/* Delete Button Styles */
+/* Form Fields Light Theme */
+.MuiTextField-root .MuiOutlinedInput-root {
+  background-color: #ffffff !important;
+  border-radius: 8px !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #e2e8f0 !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #cbd5e1 !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #912338 !important;
+}
+
+.MuiInputLabel-root {
+  color: #64748b !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: #912338 !important;
+}
+
+.MuiOutlinedInput-input {
+  color: #1f2937 !important;
+}
+
+/* Button Light Theme */
+.MuiButton-root {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  padding: 8px 16px !important;
+  font-weight: 500 !important;
+}
+
+.MuiButton-containedPrimary {
+  background-color: #912338 !important;
+}
+
+.MuiButton-containedPrimary:hover {
+  background-color: #7a1d2e !important;
+}
+
+.MuiButton-outlined {
+  border-color: #e2e8f0 !important;
+  color: #1f2937 !important;
+}
+
+.MuiButton-outlined:hover {
+  border-color: #cbd5e1 !important;
+  background-color: rgba(226, 232, 240, 0.1) !important;
+}
+
+/* Delete Button */
 .MuiButton-outlinedError {
-  border-color: #dc2626 !important;
-  color: #dc2626 !important;
+  background-color: #912338 !important;
+  border-color: #912338 !important;
+  color: #ffffff !important;
 }
 
 .MuiButton-outlinedError:hover {
-  background-color: rgba(220, 38, 38, 0.04) !important;
-  border-color: #b91c1c !important;
+  background-color: #7a1d2e !important;
+  border-color: #7a1d2e !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 4px rgba(145, 35, 56, 0.2) !important;
+}
+
+/* Time Picker Light Theme */
+.MuiPickersPopper-root .MuiPaper-root {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+}
+
+.MuiPickersPopper-root .MuiClockPicker-root {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+}
+
+.MuiPickersPopper-root .MuiClockNumber-root {
+  color: #1f2937 !important;
+}
+
+/* Calendar Popper Light Theme */
+.MuiPickersPopper-root .MuiPickersDay-root {
+  color: #1f2937 !important;
+  background-color: #f8fafc !important;
+}
+
+.MuiPickersPopper-root .MuiPickersDay-root:hover {
+  background-color: #f1f5f9 !important;
+}
+
+.MuiPickersPopper-root .Mui-selected {
+  background-color: #912338 !important;
+  color: #ffffff !important;
+}
+
+.MuiPickersPopper-root .MuiDayPicker-weekDayLabel {
+  color: #64748b !important;
+}
+
+/* Time breakdown tooltip */
+.fc-event[data-tooltip] {
+  position: relative;
+}
+
+.fc-event[data-tooltip]:before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+}
+
+.fc-event[data-tooltip]:hover:before {
+  opacity: 1;
+  visibility: visible;
 }

@@ -57,32 +57,49 @@ export default function EventDialog({
     formState: { errors },
     watch,
     setValue,
-    control
+    control,
+    reset
   } = useForm<EventCreationFormInput>({
-    resolver: zodResolver(EventCreationFormSchema),
-    defaultValues: {
-      title: '',
-      description: '',
-      location: '',
-      startDate: selectedStart ? moment(selectedStart).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
-      startTime: selectedStart ? moment(selectedStart).format('HH:mm') : moment().format('HH:mm'),
-      endDate: selectedEnd ? moment(selectedEnd).format('YYYY-MM-DD') : moment().add(1, 'hour').format('YYYY-MM-DD'),
-      endTime: selectedEnd ? moment(selectedEnd).format('HH:mm') : moment().add(1, 'hour').format('HH:mm'),
-      allDay: false
-    }
+    resolver: zodResolver(EventCreationFormSchema)
   });
 
-  // Update form values when selected dates change
+  // Reset form when dialog opens with new event data
   React.useEffect(() => {
-    if (selectedStart) {
-      setValue('startDate', moment(selectedStart).format('YYYY-MM-DD'));
-      setValue('startTime', moment(selectedStart).format('HH:mm'));
+    if (!open) {
+      setFile(null);
+      setPlanResult(null);
+      return;
     }
-    if (selectedEnd) {
-      setValue('endDate', moment(selectedEnd).format('YYYY-MM-DD'));
-      setValue('endTime', moment(selectedEnd).format('HH:mm'));
-    }
-  }, [selectedStart, selectedEnd, setValue]);
+
+    const defaultValues = {
+      title: selectedEvent?.title || '',
+      description: selectedEvent?.description || '',
+      location: selectedEvent?.location || '',
+      startDate: selectedEvent 
+        ? moment(selectedEvent.start).format('YYYY-MM-DD')
+        : selectedStart 
+          ? moment(selectedStart).format('YYYY-MM-DD') 
+          : moment().format('YYYY-MM-DD'),
+      startTime: selectedEvent
+        ? moment(selectedEvent.start).format('HH:mm')
+        : selectedStart
+          ? moment(selectedStart).format('HH:mm')
+          : moment().format('HH:mm'),
+      endDate: selectedEvent
+        ? moment(selectedEvent.end).format('YYYY-MM-DD')
+        : selectedEnd
+          ? moment(selectedEnd).format('YYYY-MM-DD')
+          : moment().add(1, 'hour').format('YYYY-MM-DD'),
+      endTime: selectedEvent
+        ? moment(selectedEvent.end).format('HH:mm')
+        : selectedEnd
+          ? moment(selectedEnd).format('HH:mm')
+          : moment().add(1, 'hour').format('HH:mm'),
+      allDay: selectedEvent?.allDay || false
+    };
+
+    reset(defaultValues);
+  }, [open, selectedEvent, selectedStart, selectedEnd, reset]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -100,6 +117,17 @@ export default function EventDialog({
       
       if (result) {
         setPlanResult(result);
+        // Update form with planned data
+        reset({
+          title: result.title,
+          description: result.description || '',
+          location: result.location || '',
+          startDate: moment(result.start).format('YYYY-MM-DD'),
+          startTime: moment(result.start).format('HH:mm'),
+          endDate: moment(result.end).format('YYYY-MM-DD'),
+          endTime: moment(result.end).format('HH:mm'),
+          allDay: result.allDay || false
+        });
       }
     } catch (error) {
       console.error('Error planning assignment:', error);
@@ -109,23 +137,38 @@ export default function EventDialog({
   };
 
   const onSubmit = (formData: EventCreationFormInput) => {
-    // Create a new event object
-    const startDateTime = moment(`${formData.startDate} ${formData.startTime}`, 'YYYY-MM-DD HH:mm');
-    const endDateTime = moment(`${formData.endDate} ${formData.endTime}`, 'YYYY-MM-DD HH:mm');
-    
-    const newEvent = {
-      id: `event-${Date.now()}-${formData.title.replace(/\s+/g, '').toLowerCase()}`,
-      title: formData.title,
-      description: formData.description,
-      location: formData.location,
-      start: startDateTime.toISOString(),
-      end: endDateTime.toISOString(),
-      startStr: startDateTime.toISOString(),
-      endStr: endDateTime.toISOString(),
-      allDay: formData.allDay || false
-    };
-    
-    onSave(newEvent);
+    try {
+      const startDateTime = moment(`${formData.startDate} ${formData.startTime}`, 'YYYY-MM-DD HH:mm');
+      const endDateTime = moment(`${formData.endDate} ${formData.endTime}`, 'YYYY-MM-DD HH:mm');
+      
+      if (!startDateTime.isValid() || !endDateTime.isValid()) {
+        throw new Error('Invalid date/time format');
+      }
+
+      const eventData = {
+        id: selectedEvent?.id || `event-${Date.now()}-${formData.title.replace(/\s+/g, '').toLowerCase()}`,
+        title: formData.title,
+        description: formData.description || '',
+        location: formData.location || '',
+        start: startDateTime.toISOString(),
+        end: endDateTime.toISOString(),
+        startStr: startDateTime.toISOString(),
+        endStr: endDateTime.toISOString(),
+        allDay: formData.allDay || false,
+        // Preserve additional data if editing existing event
+        ...(selectedEvent && {
+          timeBreakdown: selectedEvent.timeBreakdown,
+          schedulingNotes: selectedEvent.schedulingNotes,
+          ChatGptComment: selectedEvent.ChatGptComment,
+          FirstQuestion: selectedEvent.FirstQuestion
+        })
+      };
+      
+      onSave(eventData);
+    } catch (error) {
+      console.error('Error saving event:', error);
+      alert('Failed to save event. Please check the date and time values.');
+    }
   };
 
   const handleApplyPlan = () => {
@@ -137,7 +180,6 @@ export default function EventDialog({
   const handleDelete = () => {
     if (selectedEvent && onDelete) {
       onDelete(selectedEvent.id);
-      onClose();
     }
   };
 
@@ -156,6 +198,7 @@ export default function EventDialog({
                 {...register('title')}
                 error={!!errors.title}
                 helperText={errors.title?.message}
+                defaultValue={selectedEvent?.title || ''}
               />
             </Grid>
             
@@ -164,8 +207,9 @@ export default function EventDialog({
                 fullWidth
                 label="Description"
                 multiline
-                rows={2}
+                rows={3}
                 {...register('description')}
+                defaultValue={selectedEvent?.description || ''}
               />
             </Grid>
             
@@ -174,8 +218,64 @@ export default function EventDialog({
                 fullWidth
                 label="Location"
                 {...register('location')}
+                defaultValue={selectedEvent?.location || ''}
               />
             </Grid>
+
+            {selectedEvent?.ChatGptComment && (
+              <Grid item xs={12}>
+                <Paper elevation={1} sx={{ p: 2, bgcolor: 'background.default' }}>
+                  <Typography variant="subtitle2" color="primary" gutterBottom>
+                    AI Analysis
+                  </Typography>
+                  <Typography variant="body2">
+                    {selectedEvent.ChatGptComment}
+                  </Typography>
+                </Paper>
+              </Grid>
+            )}
+
+            {selectedEvent?.timeBreakdown && (
+              <Grid item xs={12}>
+                <Paper elevation={1} sx={{ p: 2, bgcolor: 'background.default' }}>
+                  <Typography variant="subtitle2" color="primary" gutterBottom>
+                    Time Breakdown
+                  </Typography>
+                  <Grid container spacing={1}>
+                    <Grid item xs={6}>
+                      <Typography variant="body2">
+                        Total Hours: {selectedEvent.timeBreakdown.estimatedTotalHours}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="body2">
+                        Reading: {selectedEvent.timeBreakdown.readingTime}h
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="body2">
+                        Research: {selectedEvent.timeBreakdown.researchTime}h
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="body2">
+                        Writing: {selectedEvent.timeBreakdown.writingTime}h
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="body2">
+                        Review: {selectedEvent.timeBreakdown.reviewTime}h
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="body2">
+                        Buffer: {selectedEvent.timeBreakdown.bufferTime}h
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Paper>
+              </Grid>
+            )}
             
             <Grid item xs={12} sm={6}>
               <LocalizationProvider dateAdapter={AdapterMoment}>
